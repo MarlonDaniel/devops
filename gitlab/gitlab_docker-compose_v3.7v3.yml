@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+    gitlab:
+        #build:
+        #    context: .
+        #    dockerfile: gitlab_dockerfile.yml
+        image: gitlab/gitlab-ce:latest
+        #hostname: gitlab.pimpollo.ddns.net
+        #container_name: gitlab
+        ports:
+            - "9001:80"
+            - "9000:443"
+            - "9002:22"
+        volumes:
+            - gitlab_config:/etc/gitlab
+            - gitlab_logs:/var/log/gitlab
+            - gitlab_data:/var/opt/gitlab
+        deploy:
+            #replicas: 1
+            restart_policy:
+                condition: on-failure
+
+volumes:
+    gitlab_config:
+        driver: local-persist
+        driver_opts:
+            mountpoint: #/etc/docker/volumes/gitlab-server/config #$GITLAB_HOME/config
+    gitlab_logs:
+        driver: local-persist
+        driver_opts:
+            mountpoint: #/etc/docker/volumes/gitlab-server/logs #$GITLAB_HOME/logs
+    gitlab_data:
+        driver: local-persist
+        driver_opts:
+            mountpoint: #/etc/docker/volumes/gitlab-server/data #$GITLAB_HOME/data

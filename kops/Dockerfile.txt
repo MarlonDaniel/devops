@@ -1,0 +1,17 @@
+from ubuntu
+# Instalando kubectl
+run apt-get --assume-yes update && apt-get --assume-yes upgrade && apt-get --assume-yes update 
+run apt-get --assume-yes update && apt-get --assume-yes install -y apt-transport-https gnupg2
+run apt-get --assume-yes install curl 
+run curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+run echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
+run apt-get --assume-yes update
+run apt-get --assume-yes install -y kubectl
+run apt-get --assume-yes update && apt-get --assume-yes upgrade && apt-get --assume-yes update 
+#Test instalation: kubectl version --client
+# Instalando kops
+run curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+run chmod +x kops-linux-amd64
+run mv kops-linux-amd64 /usr/local/bin/kops
+# Build container:  docker build -t ubuntu:kops .
+# Run container: docker run --rm -it ubuntu:kops
